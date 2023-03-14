@@ -1,26 +1,4 @@
-//--------------------------------------------------------------
-// prodAx.c
-//--------------------------------------------------------------
-// Calcula el producto de una matriz m x n por un vector tamaño n
-//--------------------------------------------------------------
-// Auth.  JJCelada - Universidad del Valle de Guatemala
-// Date   2021-10-06
-// Vers.  1.0
 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <omp.h>
-
-
- void prodAx(int m, int n, double * restrict A, double * restrict x,
-   double * restrict b);
-
- int main(int argc, char *argv[]) {
-   double *A,*x,*b;
-   int i, j, m, n;
-
-   printf("Ingrese las dimensiones m y n de la matriz: ");
    scanf("%d %d",&m,&n);
 
    //---- Asignación de memoria para la matriz A ----
@@ -62,24 +40,15 @@
  * prodAx
  * ------------------------
  */
+void prodAx(int m, int n, double* restrict A, double* restrict x, double* restrict b) {
+  int i, j;
 
-
-void prodAx(int m, int n, double * restrict A, double * restrict x,
-  double * restrict b){
-
-    int i, j;
-    
-    #pragma omp parallel for shared(m,n,A,x,b) private(i,j) 
-    {
-      for(i=0; i<m; i++){
-        double sum = 0.0;
-
-        for(j=0; j<n; j++){
-          sum += A[i*n + j] * x[j];
-        }
-
-        #pragma omp critical
-        b[i] += sum;
-      }
+  #pragma omp parallel for shared(m,n,A,x,b) private(i,j)
+  for (i = 0; i < m; i++) {
+    double temp = 0.0;
+    for (j = 0; j < n; j++) {
+      temp += A[i*n + j] * x[j];
     }
+    b[i] = temp;
+  }
 }
