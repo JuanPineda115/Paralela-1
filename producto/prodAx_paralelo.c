@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 
  void prodAx(int m, int n, double * restrict A, double * restrict x,
