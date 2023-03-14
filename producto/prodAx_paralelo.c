@@ -65,24 +65,19 @@
 
 
 void prodAx(int m, int n, double * restrict A, double * restrict x,
-  double * restrict b){
+ double * restrict b){
 
-    int i, j;
-    double sum;
 
-    #pragma omp parallel for shared(m, n, A, x, b) private(i,j,sum) reduction(+:temp)
-    {
-      for(i=0; i<m; i++){
-        sum = 0.0;
+   int i, j;
+  
+   #pragma omp parallel for shared(m, n, A, x, b) private(i,j)  reduction(+:temp)
+   {
+     for(i=0; i<m; i++){
+       b[i]=0.0;
 
-        for(j=0; j<n; j++){
-          sum += A[i*n + j] * x[j];
-        }
-
-        #pragma omp critical
-        {
-          b[i] += sum;
-        }
-      }
-    }
-}
+       for(j=0; j<n; j++){
+         b[i] += A[i*n + j] * x[j];
+       }
+     }
+   }
+ }//----prodAx----
