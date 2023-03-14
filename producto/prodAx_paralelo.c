@@ -62,17 +62,14 @@
  * prodAx
  * ------------------------
  */
-void prodAx(int m, int n, double * restrict A, double * restrict x,
-  double * restrict b){
-
+void prodAx(int m, int n, double* A, double* x, double* b) {
   int i, j;
 
-  #pragma omp parallel for
-  for(i=0; i<m; i++){
-    b[i]=0.0;
-
-    for(j=0; j<n; j++){
-      b[i] += A[i*n + j] * x[j];
+  #pragma omp parallel for shared(m,n,A,x,b) private(i,j)
+  for(i = 0; i < m; i++) {
+    b[i] = 0.0;  //inicialización elemento i del vec.
+    for(j = 0; j < n; j++) {
+      b[i] += A[i*n + j] * x[j]; //producto punto
     }
-  }
-}//----prodAx----
+  }/*−−-Fin de parallel for−−−*/
+}
