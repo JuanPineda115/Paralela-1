@@ -1,4 +1,25 @@
+//--------------------------------------------------------------
+// prodAx.c
+//--------------------------------------------------------------
+// Calcula el producto de una matriz m x n por un vector tamaño n
+//--------------------------------------------------------------
+// Auth.  JJCelada - Universidad del Valle de Guatemala
+// Date   2021-10-06
+// Vers.  1.0
 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+#include <time.h>
+
+
+ void prodAx(int m, int n, double * restrict A, double * restrict x,
+   double * restrict b);
+
+ int main(int argc, char *argv[]) {
+   double *A,*x,*b;
+   int i, j, m, n;
 
    printf("Ingrese las dimensiones m y n de la matriz: ");
    scanf("%d %d",&m,&n);
