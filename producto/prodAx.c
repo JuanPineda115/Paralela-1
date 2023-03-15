@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
  void prodAx(int m, int n, double * restrict A, double * restrict x,
@@ -45,7 +46,11 @@
       A[i*n+j] = rand()%13+1;
 
   printf("Calculando el producto Ax para m = %d n = %d\n",m,n);
+  clock_t t;
+  t = clock();
   (void) prodAx(m, n, A, x, b);
+  t = clock() - t;
+  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
 
   printf("\nb: \n");
   for(j=0; j<n; j++)
@@ -53,6 +58,7 @@
   printf("\n\n");
 
   free(A);free(x);free(b);
+  printf("prodAx() took %f seconds to execute \n", time_taken);
 
   return(0);
  }
